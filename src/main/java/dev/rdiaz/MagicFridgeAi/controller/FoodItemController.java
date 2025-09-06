@@ -20,7 +20,7 @@ public class FoodItemController {
 
     //POST
     @PostMapping("/criar")
-    public ResponseEntity<String> criar(@RequestBody FoodDTO foodDTO){
+    public ResponseEntity<String> criar(@RequestBody FoodDTO foodDTO) {
         foodItemService.inserir(foodDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -29,7 +29,7 @@ public class FoodItemController {
 
     //GET
     @GetMapping("/listar")
-    public ResponseEntity<List<FoodDTO>> listarIngredientes(){
+    public ResponseEntity<List<FoodDTO>> listarIngredientes() {
         List<FoodDTO> listaCompleta = foodItemService.listar();
 
         return ResponseEntity.ok(listaCompleta);
@@ -37,11 +37,11 @@ public class FoodItemController {
 
     //GETbyID
     @GetMapping("/listar/{id}")
-    public ResponseEntity<?> listarPorId(@PathVariable long id){
+    public ResponseEntity<?> listarPorId(@PathVariable long id) {
 
         FoodDTO itemProcurado = foodItemService.listarPorId(id);
 
-        if(itemProcurado != null){
+        if (itemProcurado != null) {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body("O item " + itemProcurado.getNome() + " está na lista");
 
@@ -52,11 +52,11 @@ public class FoodItemController {
 
     //UPDATE
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<?> alterar(@RequestBody FoodDTO foodDTO, @PathVariable long id){
+    public ResponseEntity<?> alterar(@RequestBody FoodDTO foodDTO, @PathVariable long id) {
 
         FoodDTO item = foodItemService.alterarPorId(foodDTO, id);
 
-        if(item != null){
+        if (item != null) {
             return ResponseEntity.ok("O item com id:" + id + " foi alterado com sucesso");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -65,13 +65,16 @@ public class FoodItemController {
 
     //DELETE
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<String> deletar(@PathVariable long id){
+    public ResponseEntity<String> deletar(@PathVariable long id) {
 
-        foodItemService.deletarItem(id);
+        FoodDTO item = foodItemService.listarPorId(id);
 
-        return ResponseEntity.ok("O item foi deletado com sucesso!");
-
+        if (item != null) {
+            foodItemService.deletarItem(id);
+            return ResponseEntity.ok("Item removido com sucesso!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("O item buscado para remoção não se encontra nos registros");
     }
-
 
 }
