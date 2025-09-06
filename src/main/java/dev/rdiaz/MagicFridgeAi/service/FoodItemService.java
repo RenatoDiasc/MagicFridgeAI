@@ -64,10 +64,7 @@ public class FoodItemService {
 
     //Delete deletar item
     public void deletarItem(long id) {
-        Optional<FoodItem> ingredienteID = foodItemRepository.findById(id);
+        foodItemRepository.findById(id);
 
-        if (ingredienteID.isPresent()) {
-            foodItemRepository.deleteById(id);
-        }
     }
 }
