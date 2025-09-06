@@ -4,6 +4,7 @@ import dev.rdiaz.MagicFridgeAi.dto.FoodDTO;
 import dev.rdiaz.MagicFridgeAi.mapper.FoodMapper;
 import dev.rdiaz.MagicFridgeAi.model.FoodItem;
 import dev.rdiaz.MagicFridgeAi.repository.FoodItemRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public class FoodItemService {
     }
 
     //Post inserir item
-    public FoodDTO inserir(FoodDTO foodDTO){
+    public FoodDTO inserir(FoodDTO foodDTO) {
         FoodItem ingrediente = foodMapper.map(foodDTO);
         foodItemRepository.save(ingrediente);
         return foodMapper.map(ingrediente);
     }
 
     //Get listar todos itens
-    public List<FoodDTO> listar(){
+    public List<FoodDTO> listar() {
         List<FoodItem> listaDeComida = foodItemRepository.findAll();
 
         return listaDeComida.stream()
@@ -39,18 +40,18 @@ public class FoodItemService {
     }
 
     //GetID listar por ID
-    public FoodDTO listarPorId(long id){
+    public FoodDTO listarPorId(long id) {
 
         Optional<FoodItem> ingredienteID = foodItemRepository.findById(id);
         return ingredienteID.map(foodMapper::map).orElse(null);
     }
 
     //Put alterar item
-    public FoodDTO alterarPorId(FoodDTO foodDTO, long id){
+    public FoodDTO alterarPorId(FoodDTO foodDTO, long id) {
 
         Optional<FoodItem> itemExistente = Optional.of(foodItemRepository.getReferenceById(id));
 
-        if(itemExistente.isPresent()){
+        if (itemExistente.isPresent()) {
             FoodItem itemAtualizado = new FoodItem();
             itemAtualizado.setId(id);
             FoodItem itemSalvo = foodItemRepository.save(itemAtualizado);
@@ -62,10 +63,11 @@ public class FoodItemService {
 
 
     //Delete deletar item
-    public void deletarItem(long id){
-        foodItemRepository.deleteById(id);
+    public void deletarItem(long id) {
+        Optional<FoodItem> ingredienteID = foodItemRepository.findById(id);
+
+        if (ingredienteID.isPresent()) {
+            foodItemRepository.deleteById(id);
+        }
     }
-
-
-
 }
