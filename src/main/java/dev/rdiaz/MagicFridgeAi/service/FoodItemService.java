@@ -64,7 +64,7 @@ public class FoodItemService {
 
     //Delete deletar item
     public void deletarItem(long id) {
-        foodItemRepository.findById(id);
+        foodItemRepository.deleteById(id);
 
     }
 }
