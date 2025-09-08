@@ -20,15 +20,12 @@ public class FoodItem {
     private FoodCategoria categoria;
     private Integer quantidade;
     private LocalDate validade;
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getNome() {
         return nome;
     }

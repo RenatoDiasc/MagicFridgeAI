@@ -1,6 +1,8 @@
 package dev.rdiaz.MagicFridgeAi.dto;
 
 import dev.rdiaz.MagicFridgeAi.categorias.FoodCategoria;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
