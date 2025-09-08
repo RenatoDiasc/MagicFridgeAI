@@ -1,6 +1,8 @@
 package dev.rdiaz.MagicFridgeAi.service;
 
 
+import dev.rdiaz.MagicFridgeAi.dto.FoodDTO;
+import dev.rdiaz.MagicFridgeAi.model.FoodItem;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatGptService {
@@ -22,8 +25,13 @@ public class ChatGptService {
 
     }
 
-    public Mono<String> generateRecipe() {
-        String prompt = "Me sugira uma receita simples com ingredientes comuns";
+    public Mono<String> generateRecipe(List<FoodDTO> foodItems) {
+        String alimentos = foodItems.stream()
+                .map(item->String.format("%s (%s) - Quantidade: %d, Validade: %s",
+                     item.getNome(), item.getCategoria(), item.getQuantidade(), item.getValidade()))
+                .collect(Collectors.joining("\n"));
+
+        String prompt = "Baseado no meu banco de dados, faça uma receita com os seguintes itens: \n" + alimentos;
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-4o-mini",
                 "messages", List.of(
